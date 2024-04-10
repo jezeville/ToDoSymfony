@@ -20,7 +20,7 @@ JWT Authentication: JSON Web Tokens (JWT) are used for securing endpoints and au
 ## Getting Started
 To get started with this TodoList API, follow these steps:
 
-Clone the repository: git clone https://github.com/your-username/symfony-todolist-api.git
+Clone the repository
 Install dependencies: composer install
 Set up the database: php bin/console doctrine:database:create && php bin/console doctrine:schema:update --force
 Run the server: symfony server:start
