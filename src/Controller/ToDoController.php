@@ -2,13 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Todo;
 use App\Repository\TodoRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Doctrine\ORM\EntityManagerInterface;
 
 class ToDoController extends AbstractController
 {
@@ -56,5 +58,15 @@ class ToDoController extends AbstractController
         return new JsonResponse(['message' => 'La tâche n\'a pas été trouvée'], Response::HTTP_NOT_FOUND);
     }
 
+    //Post task
+    #[Route('/api/task', name: 'task_add', methods : ['POST'])]
+    public function addTask(Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer): Response
+    {
+        $data = $request->getContent();
+        $task = $serializer->deserialize($data, Todo::class, 'json');
+        $entityManager->persist($task);
+        $entityManager->flush();
+        return new JsonResponse(['message' => 'Tâche ajoutée avec succès'], Response::HTTP_CREATED);
+    }
 
 }
